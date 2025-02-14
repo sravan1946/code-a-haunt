@@ -1,6 +1,7 @@
 import re
-from flask import Flask
-from flask import render_template, send_from_directory, request, redirect, url_for, send_file
+from flask import Flask, render_template
+from flask_login import LoginManager, login_required, current_user
+from auth import auth, login_manager
 import asyncio
 import shutil
 import os
@@ -8,6 +9,11 @@ import requests
 
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.urandom(24)
+login_manager.init_app(app)
+
+app.register_blueprint(auth)
+
 
 @app.route('/')
 def index():

@@ -2,3 +2,5 @@ flask
 icecream
 flask_socketio
 eventlet
+requests
+flask_login

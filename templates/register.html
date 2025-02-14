@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        /* Background animation */
+        body::before {
+            content: "";
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background: linear-gradient(135deg, #6b73ff, #000dff);
+            clip-path: circle(40% at 30% 30%);
+            opacity: 0.5;
+            animation: moveBackground 10s infinite alternate;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 120%;
+            height: 120%;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            clip-path: circle(40% at 70% 70%);
+            opacity: 0.5;
+            animation: moveBackground 12s infinite alternate-reverse;
+        }
+
+        @keyframes moveBackground {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.2);
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 relative overflow-hidden">
+
+    <div class="relative bg-white bg-opacity-10 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-md border border-white border-opacity-20" data-aos="fade-up">
+        <h2 class="text-2xl font-bold text-center text-white mb-6">Create an Account</h2>
+        
+        <form action="{{ url_for('auth.register') }}" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-white">Full Name</label>
+                <input type="text" name="name" required class="mt-1 w-full p-2 bg-white bg-opacity-20 text-white border border-white border-opacity-30 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-white">Patient ID</label>
+                <input type="text" name="patient_id" required class="mt-1 w-full p-2 bg-white bg-opacity-20 text-white border border-white border-opacity-30 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-white">Gender</label>
+                <select name="gender" required class="mt-1 w-full p-2 bg-white bg-opacity-20 text-white border border-white border-opacity-30 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none">
+                    <option value="Male" class="text-black">Male</option>
+                    <option value="Female" class="text-black">Female</option>
+                    <option value="Other" class="text-black">Other</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-white">Phone Number</label>
+                <input type="text" name="phone" required class="mt-1 w-full p-2 bg-white bg-opacity-20 text-white border border-white border-opacity-30 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-white">Email</label>
+                <input type="email" name="email" required class="mt-1 w-full p-2 bg-white bg-opacity-20 text-white border border-white border-opacity-30 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-white">Password</label>
+                <input type="password" name="password" required class="mt-1 w-full p-2 bg-white bg-opacity-20 text-white border border-white border-opacity-30 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-white">Date of Birth</label>
+                <input type="date" name="dob" required class="mt-1 w-full p-2 bg-white bg-opacity-20 text-white border border-white border-opacity-30 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition shadow-lg">
+                Register
+            </button>
+        </form>
+
+        <p class="text-center text-white text-sm mt-4">
+            Already have an account? <a href="{{ url_for('auth.login') }}" class="text-blue-300 hover:underline">Log in</a>
+        </p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>
