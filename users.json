@@ -1,0 +1,31 @@
+{
+    "users": [
+        {
+            "pid": 24266304308073,
+            "name": "sravan krishna",
+            "email": "miniclip1956@gmail.com",
+            "password": "asdf",
+            "phone_no": "09745007788",
+            "gender": "Male",
+            "DOB": "2010-10-10"
+        },
+        {
+            "pid": 12632362543943,
+            "name": "sravan krishna",
+            "email": "miniclip196@gmail.com",
+            "password": "asdf",
+            "phone_no": "0974500778",
+            "gender": "Male",
+            "DOB": "0323-03-22"
+        },
+        {
+            "pid": 74044600963064,
+            "name": "sravan krishna",
+            "email": "miniclip956@gmail.com",
+            "password": "asdf",
+            "phone_no": "097450788",
+            "gender": "Male",
+            "DOB": "0055-05-05"
+        }
+    ]
+}
