@@ -92,6 +92,8 @@ def login():
             if user["email"] == email and user["password"] == password:
                 user_obj = User(**user)
                 login_user(user_obj)
+                session["logged_in"] = True
+                session["patient_id"] = user["pid"]
                 flash("Logged in successfully!", "success")
                 return redirect(url_for("index"))
         flash("Invalid email or password.", "danger")
@@ -101,6 +103,7 @@ def login():
 def logout():
     session.pop("logged_in", None)
     session.pop("patient_id", None)
+    logout_user()
     flash("Logged out successfully!", "success")
     return redirect(url_for("auth.login"))
 
@@ -116,8 +119,11 @@ def profile():
 @auth.route("/profile/<pid>")
 def profile_pid(pid):
     users = load_users()
-    user = next((u for u in users["users"] if u["patient_id"] == pid), None)
-
+    for user in users["users"]:
+        if user["pid"] == int(pid):
+            break
+    else:
+        user = None
     if not user:
         flash("Profile not found!", "error")
         return redirect(url_for("auth.login"))
