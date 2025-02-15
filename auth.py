@@ -42,44 +42,46 @@ def load_user(user_id):
 
 @auth.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        pid: int = int(str(uuid.uuid4().int)[:14])
-        name: str = request.form["name"]
-        email: str = request.form["email"]
-        password: str = request.form["password"]
-        phone_no: int = request.form["phone"]
-        gender: str = request.form["gender"]
-        DOB: str = request.form["dob"]  # Store DOB as a string
+    if request.method != "POST":
+        return render_template("register.html")
+    pid: int = int(str(uuid.uuid4().int)[:14])
+    name: str = request.form["name"]
+    email: str = request.form["email"]
+    password: str = request.form["password"]
+    phone_no: str = request.form["phone"]
+    gender: str = request.form["gender"]
+    DOB: str = request.form["dob"]  # Store DOB as a string
 
-        user = User(
-            pid=pid,
-            name=name,
-            email=email,
-            password=password,
-            phone_no=phone_no,
-            gender=gender,
-            DOB=DOB,
-        )
+    user = User(
+        pid=pid,
+        name=name,
+        email=email,
+        password=password,
+        phone_no=phone_no,
+        gender=gender,
+        DOB=DOB,
+    )
 
-        users = load_users()
-        if user.email in [user["email"] for user in users["users"]]:
-            flash("Email already exists.", "danger")
-            return redirect(url_for("auth.register"))
-        if user.phone_no in [user["phone_no"] for user in users["users"]]:
-            flash("Phone number already exists.", "danger")
-            return redirect(url_for("auth.register"))
+    users = load_users()
+    if user.email in [user["email"] for user in users["users"]]:
+        flash("Email already exists.", "danger")
+        return redirect(url_for("auth.register"))
+    if user.phone_no in [user["phone_no"] for user in users["users"]]:
+        flash("Phone number already exists.", "danger")
+        return redirect(url_for("auth.register"))
+    if user.DOB > str(datetime.now().date()):
+        flash("Invalid date of birth.", "danger")
+        return redirect(url_for("auth.register"))
 
-        users["users"].append(user.__dict__)
-        save_users(users)
+    users["users"].append(user.__dict__)
+    save_users(users)
 
-        # Auto-login after registration
-        session["logged_in"] = True
-        session["patient_id"] = pid
+    # Auto-login after registration
+    session["logged_in"] = True
+    session["patient_id"] = pid
 
-        flash("Account created successfully!", "success")
-        return redirect(url_for("auth.profile"))
-
-    return render_template("register.html")
+    flash("Account created successfully!", "success")
+    return redirect(url_for("auth.profile"))
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
