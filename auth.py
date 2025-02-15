@@ -1,5 +1,5 @@
 import uuid
-from flask import Blueprint, request, redirect, url_for, render_template, flash
+from flask import Blueprint, request, redirect, session, url_for, render_template, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from utils import load_users, save_users
 from datetime import datetime
@@ -49,7 +49,8 @@ def register():
         password: str = request.form["password"]
         phone_no: int = request.form["phone"]
         gender: str = request.form["gender"]
-        DOB: datetime.date = request.form["dob"]
+        DOB: str = request.form["dob"]  # Store DOB as a string
+
         user = User(
             pid=pid,
             name=name,
@@ -59,6 +60,7 @@ def register():
             gender=gender,
             DOB=DOB,
         )
+
         users = load_users()
         if user.email in [user["email"] for user in users["users"]]:
             flash("Email already exists.", "danger")
@@ -66,10 +68,17 @@ def register():
         if user.phone_no in [user["phone_no"] for user in users["users"]]:
             flash("Phone number already exists.", "danger")
             return redirect(url_for("auth.register"))
-        users["users"].append(user.__dict__())
+
+        users["users"].append(user.__dict__)
         save_users(users)
-        flash("Account created! You can log in now.", "success")
-        return redirect(url_for("auth.login"))
+
+        # Auto-login after registration
+        session["logged_in"] = True
+        session["patient_id"] = pid
+
+        flash("Account created successfully!", "success")
+        return redirect(url_for("auth.profile"))
+
     return render_template("register.html")
 
 @auth.route("/login", methods=["GET", "POST"])
@@ -89,8 +98,28 @@ def login():
     return render_template("login.html")
 
 @auth.route("/logout")
-@login_required
 def logout():
+    session.pop("logged_in", None)
+    session.pop("patient_id", None)
     flash("Logged out successfully!", "success")
-    logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("auth.login"))
+
+
+@auth.route("/profile")
+def profile():
+    if "logged_in" not in session:
+        flash("You must be logged in to access your profile.", "error")
+        return redirect(url_for("auth.login"))
+    
+    return redirect(url_for("auth.profile_pid", pid=session["patient_id"]))
+
+@auth.route("/profile/<pid>")
+def profile_pid(pid):
+    users = load_users()
+    user = next((u for u in users["users"] if u["patient_id"] == pid), None)
+
+    if not user:
+        flash("Profile not found!", "error")
+        return redirect(url_for("auth.login"))
+
+    return render_template("profile.html", user=user)

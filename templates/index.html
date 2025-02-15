@@ -43,33 +43,50 @@
 
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
-    <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-4">
-        {% for category, message in messages %}
-            {% if category == 'success' %}
-                <div class="flash-message bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center">
-            {% elif category == 'error' %}
-                <div class="flash-message bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center">
-            {% elif category == 'warning' %}
-                <div class="flash-message bg-yellow-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center">
-            {% else %}
-                <div class="flash-message bg-blue-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center">
-            {% endif %}
-                    <span class="flex-1">{{ message }}</span>
-                    <button type="button" onclick="this.parentElement.remove();" class="ml-4 text-white hover:text-gray-300">
-                        &#x2715;
-                    </button>
-                </div>
-        {% endfor %}
-    </div>
-    <script>
+  <style>
+    .flash-message {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    .flash-message.fade {
+      opacity: 0;
+    }
+  </style>
+  <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-4">
+    {% for category, message in messages %}
+      {% if category == 'success' %}
+        <div class="flash-message bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center">
+      {% elif category == 'error' %}
+        <div class="flash-message bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center">
+      {% elif category == 'warning' %}
+        <div class="flash-message bg-yellow-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center">
+      {% else %}
+        <div class="flash-message bg-blue-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center">
+      {% endif %}
+          <span class="flex-1">{{ message }}</span>
+          <button type="button" onclick="closeFlashMessage(this.parentElement);" class="ml-4 text-white hover:text-gray-300">
+            &#x2715;
+          </button>
+        </div>
+    {% endfor %}
+  </div>
+  <script>
+    function closeFlashMessage(el) {
+      el.classList.add('fade');
+      setTimeout(function() { el.remove(); }, 500);
+    }
+    
+    setTimeout(function() {
+      var flashMessages = document.getElementById('flash-messages');
+      if (flashMessages) {
+        flashMessages.classList.add('fade');
         setTimeout(function() {
-            var flashMessages = document.getElementById('flash-messages');
-            if (flashMessages) {
-                flashMessages.remove();
-            }
-        }, 5000);
-    </script>
-    {% endif %}
+          flashMessages.remove();
+        }, 500);
+      }
+    }, 5000);
+  </script>
+{% endif %}
 {% endwith %}
 
 
