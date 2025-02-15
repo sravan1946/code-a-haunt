@@ -61,23 +61,24 @@
         <div class="w-1/3 flex flex-col items-center">
             <div class="w-32 h-32 bg-gray-200 rounded-full mb-4"></div>
             <div class="text-center">
-                <h2 class="text-xl font-semibold">John Doe</h2>
-                <p class="text-gray-600">+1234567890</p>
+                <h2 class="text-xl font-semibold">{{user.name}}</h2>
+                <p class="text-gray-600">{{user.phone_no}}</p>
             </div>
         </div>
         <div class="w-2/3 pl-6">
             <div class="flex items-center mb-4">
-                <img src="avatar.jpg" alt="Avatar" class="w-16 h-16 rounded-full mr-4">
+                <img src="https://avatar.iran.liara.run/username?username={{user.name}}" alt="Avatar" class="w-16 h-16 rounded-full mr-4">
                 <div>
-                    <h3 class="text-lg font-semibold">John Doe</h3>
-                    <p class="text-gray-600">Software Engineer</p>
+                    <h3 class="text-lg font-semibold">{{user.name}}</h3>
+                    <p class="text-gray-600">{{ user.pid }}</p>
                 </div>
             </div>
             <div>
                 <h4 class="text-lg font-semibold mb-2">Details</h4>
-                <p class="text-gray-600 mb-2">Email: john.doe@example.com</p>
-                <p class="text-gray-600 mb-2">Address: 123 Main St, Anytown, USA</p>
-                <p class="text-gray-600">Bio: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                <p class="text-gray-600 mb-2">Email: {{user.email}}</p>
+                <p class = "text-gray-600 mb-2">Gender: {{user.gender}}</p>
+                <p class="text-gray-600 mb-2">DOB: {{user.DOB}}</p>
+                
             </div>
         </div>
     </div>
